@@ -1,0 +1,68 @@
+@model NueroDrive.Models.Vehicle
+
+@{
+    ViewData["Title"] = $"Vehicle: {Model.Name}";
+}
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>@Model.Name</h1>
+        <p><strong>Car ID:</strong> @Model.CarId</p>
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <p><strong>Description:</strong> @Model.Description</p>
+        }
+    </div>
+    <div class="col-md-4 text-end">
+        <div class="btn-group mb-2 w-100">
+            <a asp-action="Index" class="btn btn-outline-secondary">Back to Vehicles</a>
+            <a asp-action="AddDriver" asp-route-vehicleId="@Model.Id" class="btn btn-primary">Add Driver</a>
+        </div>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger w-100">Delete Vehicle</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Authorized Drivers</h3>
+    </div>
+    <div class="card-body">
+        @if (Model.AuthorizedDrivers.Count == 0)
+        {
+            <div class="alert alert-info">
+                <p>No authorized drivers added yet. Click the "Add Driver" button to get started.</p>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var driver in Model.AuthorizedDrivers)
+                {
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0">@driver.Name</h5>
+                            </div>
+                            <div class="card-body text-center">
+                                @if (!string.IsNullOrEmpty(driver.FaceImageBase64))
+                                {
+                                    <img src="data:image/jpeg;base64,@driver.FaceImageBase64" class="preview-image" alt="@driver.Name" />
+                                }
+                                <p class="text-muted mt-2">Added on @driver.DateAdded.ToString("MMMM dd, yyyy")</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="d-grid">
+                                    <form asp-action="RemoveDriver" method="post" onsubmit="return confirm('Are you sure you want to remove this driver?');">
+                                        <input type="hidden" name="driverId" value="@driver.Id" />
+                                        <input type="hidden" name="vehicleId" value="@Model.Id" />
+                                        <button type="submit" class="btn btn-danger w-100">Remove Driver</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div> 

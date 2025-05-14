@@ -1,0 +1,60 @@
+@model NueroDrive.Models.Vehicle
+
+@{
+    ViewData["Title"] = "Add New Vehicle";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2 class="text-center">@ViewData["Title"]</h2>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" id="vehicle-form" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    
+                    <div class="form-floating mb-3">
+                        <input asp-for="CarId" class="form-control" placeholder="Car ID" />
+                        <label asp-for="CarId">Car ID</label>
+                        <span asp-validation-for="CarId" class="text-danger"></span>
+                        <div class="form-text">A unique identifier for your vehicle. This will be used by the vehicle system.</div>
+                    </div>
+                    
+                    <div class="form-floating mb-3">
+                        <input asp-for="Name" class="form-control" placeholder="Vehicle Name" />
+                        <label asp-for="Name">Vehicle Name</label>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-floating mb-3">
+                        <textarea asp-for="Description" class="form-control" placeholder="Description" style="height: 100px"></textarea>
+                        <label asp-for="Description">Description (Optional)</label>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a asp-action="Index" class="btn btn-outline-secondary me-md-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        console.log('Create page loaded');
+        
+        // Log when submit is clicked
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('vehicle-form');
+            form.addEventListener('submit', function(e) {
+                console.log('Form submit event triggered');
+            });
+        });
+    </script>
+} 

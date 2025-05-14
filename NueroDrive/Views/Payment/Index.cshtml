@@ -1,0 +1,140 @@
+@model NueroDrive.Models.ViewModels.SubscriptionViewModel
+
+@{
+    ViewData["Title"] = "Subscription Management";
+}
+
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="alert alert-info mb-4">
+            <h5><i class="bi bi-info-circle-fill"></i> Demo Mode</h5>
+            <p>This is a demonstration of the subscription feature. No actual database changes are being made.</p>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2 class="text-center mb-0">@ViewData["Title"]</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-4 mb-md-0">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h4 class="mb-0">Subscription Status</h4>
+                            </div>
+                            <div class="card-body">
+                                @if (Model.HasActiveSubscription)
+                                {
+                                    <div class="alert alert-success">
+                                        <h5><i class="bi bi-check-circle-fill"></i> Active Subscription</h5>
+                                        <p>Your @Model.CurrentSubscriptionType?.ToString().ToLower() subscription is active.</p>
+                                        <p>Expires on: @Model.SubscriptionEndDate?.ToString("MMMM dd, yyyy")</p>
+                                    </div>
+                                    
+                                    <form asp-action="Cancel" method="post" onsubmit="return confirm('Are you sure you want to cancel your subscription?');">
+                                        <button type="submit" class="btn btn-outline-danger">
+                                            <i class="bi bi-x-circle"></i> Cancel Subscription
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-warning">
+                                        <h5><i class="bi bi-exclamation-circle-fill"></i> No Active Subscription</h5>
+                                        <p>You don't have an active subscription.</p>
+                                    </div>
+                                    
+                                    <a asp-action="Subscribe" class="btn btn-primary">
+                                        <i class="bi bi-credit-card"></i> Subscribe Now
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h4 class="mb-0">Subscription Plans</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card h-100 border-primary">
+                                            <div class="card-header bg-primary text-white text-center">
+                                                <h5 class="mb-0">Monthly</h5>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <h3>$2</h3>
+                                                <p class="text-muted">per month</p>
+                                                <ul class="list-unstyled">
+                                                    <li><i class="bi bi-check-lg text-success"></i> Full access</li>
+                                                    <li><i class="bi bi-check-lg text-success"></i> Cancel anytime</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card h-100 border-primary">
+                                            <div class="card-header bg-primary text-white text-center">
+                                                <h5 class="mb-0">Annual</h5>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <h3>$20</h3>
+                                                <p class="text-muted">per year</p>
+                                                <ul class="list-unstyled">
+                                                    <li><i class="bi bi-check-lg text-success"></i> Full access</li>
+                                                    <li><i class="bi bi-check-lg text-success"></i> Save $4 per year</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.RecentPayments.Any())
+        {
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h4 class="mb-0">Recent Payments</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Subscription Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var payment in Model.RecentPayments)
+                                {
+                                    <tr>
+                                        <td>@payment.PaymentDate.ToString("MMM dd, yyyy")</td>
+                                        <td>$@payment.Amount.ToString("0.00")</td>
+                                        <td>@payment.SubscriptionType.ToString()</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div> 

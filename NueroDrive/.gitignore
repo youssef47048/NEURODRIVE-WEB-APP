@@ -1,0 +1,33 @@
+# .NET Core
+bin/
+obj/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# VS Code directories
+.vscode/
+
+# Visual Studio
+.vs/
+*.ncrunchsolution
+*.dotCover
+
+# Sensitive configuration files
+appsettings.Development.json
+appsettings.Production.json
+
+# Logs
+logs/
+*.log
+
+# User secrets
+*.usersecrets 
+
+**/Properties/PublishProfiles/*

@@ -1,0 +1,82 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center mb-5">
+    <h1 class="display-4 fw-bold">Welcome to <span class="text-primary">NueroDrive</span></h1>
+    <p class="lead">Advanced Driver Assistance Services with Facial Recognition</p>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 feature-card">
+            <div class="card-body text-center p-4">
+                <div class="feature-icon mb-3">
+                    <i class="bi bi-shield-lock fs-1 text-primary"></i>
+                </div>
+                <h5 class="card-title">Secure Vehicle Access</h5>
+                <p class="card-text">Our facial recognition technology ensures that only authorized drivers can access your vehicle.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 feature-card">
+            <div class="card-body text-center p-4">
+                <div class="feature-icon mb-3">
+                    <i class="bi bi-people fs-1 text-primary"></i>
+                </div>
+                <h5 class="card-title">Multiple Drivers</h5>
+                <p class="card-text">Easily add multiple authorized drivers to your vehicles with our intuitive management system.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 feature-card">
+            <div class="card-body text-center p-4">
+                <div class="feature-icon mb-3">
+                    <i class="bi bi-bell fs-1 text-primary"></i>
+                </div>
+                <h5 class="card-title">Instant Notifications</h5>
+                <p class="card-text">Receive immediate email notifications when unauthorized access attempts are detected.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="row mt-5">
+        <div class="col-md-8 offset-md-2">
+            <div class="card bg-light border-0">
+                <div class="card-body text-center p-5">
+                    <h2 class="mb-4">Get Started Today</h2>
+                    <p class="lead mb-4">Create an account and start securing your vehicles with facial recognition.</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg px-4 me-md-2">
+                            <i class="bi bi-person-plus me-2"></i> Register Now
+                        </a>
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary btn-lg px-4">
+                            <i class="bi bi-box-arrow-in-right me-2"></i> Sign In
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row mt-5">
+        <div class="col-md-8 offset-md-2">
+            <div class="card bg-light border-0">
+                <div class="card-body text-center p-5">
+                    <h2 class="mb-4">Manage Your Vehicles</h2>
+                    <p class="lead mb-4">Add vehicles and authorized drivers to your account.</p>
+                    <a asp-controller="Vehicle" asp-action="Index" class="btn btn-primary btn-lg px-4">
+                        <i class="bi bi-car-front me-2"></i> Go to My Vehicles
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+} 

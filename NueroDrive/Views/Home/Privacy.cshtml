@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<div class="container mt-5">
+    <h1>@ViewData["Title"]</h1>
+    
+    <div class="card mt-4">
+        <div class="card-body">
+            <h2>Information Collection and Use</h2>
+            <p>
+                NueroDrive collects personal information including name, email, phone number, and facial recognition data 
+                for the purpose of providing secure vehicle access. This data is used solely for authentication and is not shared 
+                with third parties except as required by law.
+            </p>
+            
+            <h2>Face Recognition Data</h2>
+            <p>
+                Our application uses face recognition technology to verify driver identity. This biometric data is:
+            </p>
+            <ul>
+                <li>Encrypted and stored securely</li>
+                <li>Used only for vehicle access authentication</li>
+                <li>Not used for marketing or profiling purposes</li>
+                <li>Deleted upon account termination</li>
+            </ul>
+            
+            <h2>Security</h2>
+            <p>
+                We implement appropriate security measures to protect your personal information. 
+                However, no method of transmission over the Internet or electronic storage is 100% secure.
+            </p>
+            
+            <h2>Data Retention</h2>
+            <p>
+                We retain your personal information only for as long as necessary to fulfill the purposes outlined in this privacy policy.
+            </p>
+            
+            <h2>Your Rights</h2>
+            <p>
+                You have the right to access, correct, or delete your personal information. To exercise these rights, 
+                please contact us at support@nuerodrive.com.
+            </p>
+            
+            <h2>Changes to This Privacy Policy</h2>
+            <p>
+                We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.
+            </p>
+            
+            <p class="mt-4">Last updated: @DateTime.Now.ToString("MMMM dd, yyyy")</p>
+        </div>
+    </div>
+</div> 

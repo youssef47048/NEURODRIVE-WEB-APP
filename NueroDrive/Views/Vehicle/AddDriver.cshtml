@@ -1,0 +1,47 @@
+@model NueroDrive.Models.ViewModels.AddDriverViewModel
+
+@{
+    ViewData["Title"] = "Add Authorized Driver";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2 class="text-center">@ViewData["Title"]</h2>
+            </div>
+            <div class="card-body">
+                <form asp-action="AddDriver" method="post" id="driver-form" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <input type="hidden" asp-for="VehicleId" />
+                    <input type="hidden" asp-for="FaceImageBase64" id="FaceImageBase64" />
+                    
+                    <div class="form-floating mb-3">
+                        <input asp-for="DriverName" class="form-control" placeholder="Driver Name" />
+                        <label asp-for="DriverName">Driver Name</label>
+                        <span asp-validation-for="DriverName" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Driver's Face Image</label>
+                        <div class="image-upload-container">
+                            <input type="file" id="face-image-input" class="form-control" accept="image/*" required />
+                            <p class="text-muted mt-2">Upload a clear front-facing photo of the driver's face</p>
+                            <img id="preview-image" class="preview-image mt-3" style="display: none;" />
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a asp-action="Details" asp-route-id="@Model.VehicleId" class="btn btn-outline-secondary me-md-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Add Driver</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} 

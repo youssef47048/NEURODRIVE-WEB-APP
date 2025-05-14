@@ -1,0 +1,37 @@
+@* @{
+    ViewData["Title"] = "Test Create Vehicle";
+}
+
+<div class="container">
+    <h2>Test Create Vehicle</h2>
+    
+    <form action="/Vehicle/Create" method="post">
+        @Html.AntiForgeryToken()
+        
+        <div class="mb-3">
+            <label for="CarId" class="form-label">Car ID</label>
+            <input type="text" class="form-control" id="CarId" name="CarId" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="Name" class="form-label">Vehicle Name</label>
+            <input type="text" class="form-control" id="Name" name="Name" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="Description" class="form-label">Description</label>
+            <textarea class="form-control" id="Description" name="Description"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        console.log('Form is being submitted...');
+    });
+});
+</script>  *@

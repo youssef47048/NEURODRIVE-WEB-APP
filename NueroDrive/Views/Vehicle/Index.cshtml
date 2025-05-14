@@ -1,0 +1,74 @@
+@model IEnumerable<NueroDrive.Models.Vehicle>
+
+@{
+    ViewData["Title"] = "My Vehicles";
+}
+
+<div class="row align-items-center mb-4">
+    <div class="col-md-8">
+        <h1><i class="bi bi-car-front-fill me-2"></i>@ViewData["Title"]</h1>
+    </div>
+    <div class="col-md-4 text-md-end">
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-2"></i>Add New Vehicle
+        </a>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-info-circle-fill me-3 fs-3"></i>
+            <p class="mb-0">You don't have any vehicles yet. Click the "Add New Vehicle" button to get started.</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var vehicle in Model)
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card vehicle-card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="bi bi-car-front me-2"></i>@vehicle.Name
+                        </h5>
+                        <span class="badge bg-success">Active</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-key me-2 text-primary"></i>
+                                <strong>Car ID:</strong>
+                            </div>
+                            <p class="ms-4">@vehicle.CarId</p>
+                        </div>
+                        
+                        @if (!string.IsNullOrEmpty(vehicle.Description))
+                        {
+                            <div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-info-circle me-2 text-primary"></i>
+                                    <strong>Description:</strong>
+                                </div>
+                                <p class="ms-4">@vehicle.Description</p>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Details" asp-route-id="@vehicle.Id" class="btn btn-outline-primary">
+                                <i class="bi bi-people me-2"></i>Manage Drivers
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@vehicle.Id" class="btn btn-outline-danger">
+                                <i class="bi bi-trash me-2"></i>Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+} 

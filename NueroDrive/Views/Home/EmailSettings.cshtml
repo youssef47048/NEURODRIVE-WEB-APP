@@ -1,0 +1,63 @@
+@{
+    ViewData["Title"] = "Email Notification Settings";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2>@ViewData["Title"]</h2>
+                </div>
+                <div class="card-body">
+                    <h4 class="mb-4">Email Notification for Unauthorized Access</h4>
+                    
+                    <div class="alert alert-info">
+                        <p>NueroDrive can send email notifications when an unauthorized person attempts to access your vehicle.</p>
+                    </div>
+                    
+                    <h5 class="mt-4">How Email Notifications Work</h5>
+                    <p>When the facial recognition system detects an unauthorized person attempting to access your vehicle, an email alert will be sent to the vehicle owner's email address with details about:</p>
+                    <ul>
+                        <li>The vehicle that was accessed</li>
+                        <li>The time of the access attempt</li>
+                        <li>Instructions for contacting support if needed</li>
+                    </ul>
+                    
+                    <h5 class="mt-4">Email Configuration</h5>
+                    <p>To enable email notifications, you need to configure the system with valid SMTP server settings in the <code>appsettings.json</code> file:</p>
+                    
+                    <pre class="bg-light p-3 mb-4"><code>{
+  "EmailSettings": {
+    "SmtpHost": "smtp.gmail.com",
+    "SmtpPort": "587",
+    "SmtpUsername": "your-email@gmail.com",
+    "SmtpPassword": "your-app-password",
+    "SenderEmail": "your-email@gmail.com"
+  }
+}</code></pre>
+                    
+                    <h5 class="mt-4">Using Gmail for Notifications</h5>
+                    <p>If you're using Gmail, you'll need to:</p>
+                    <ol>
+                        <li>Enable 2-Step Verification on your Google account</li>
+                        <li>Generate an App Password (16-character code)</li>
+                        <li>Use this App Password in your configuration instead of your regular password</li>
+                    </ol>
+                    
+                    <div class="alert alert-warning">
+                        <strong>Note:</strong> Never share your email credentials or include them in public repositories or shared code.
+                    </div>
+                    
+                    <h5 class="mt-4">Testing Email Notifications</h5>
+                    <p>After configuring your email settings, you can test the notification system by:</p>
+                    <ol>
+                        <li>Making an API call to any of the face verification endpoints with an unrecognized face</li>
+                        <li>Checking your email for the notification</li>
+                        <li>Reviewing application logs for any email sending errors</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
