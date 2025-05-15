@@ -22,12 +22,24 @@ obj/
 # Sensitive configuration files
 appsettings.Development.json
 appsettings.Production.json
+appsettings.json
+!appsettings.template.json
+
+# Data protection keys
+DataProtectionKeys/
 
 # Logs
 logs/
 *.log
 
 # User secrets
-*.usersecrets 
+*.usersecrets
+**/secrets.json
 
+# Publishing profiles
 **/Properties/PublishProfiles/*
+**/Properties/ServiceDependencies/*
+
+# Temporary files
+[Tt]emp/
+[Tt]mp/
