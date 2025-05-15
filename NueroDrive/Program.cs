@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NueroDrive.Data;
+using NueroDrive.Models;
 using NueroDrive.Services;
 using System.IO;
 
@@ -38,9 +40,25 @@ namespace NueroDrive
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // Add ASP.NET Core Identity
+            builder.Services.AddIdentity<User, IdentityRole>(options => {
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequiredLength = 6;
+                })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
             // Add authentication
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
+            builder.Services.AddAuthentication(options => 
+                {
+                    options.DefaultScheme = IdentityConstants.ApplicationScheme;
+                    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+                })
+                .AddCookie(IdentityConstants.ApplicationScheme, options =>
                 {
                     options.LoginPath = "/Account/Login";
                     options.LogoutPath = "/Account/Logout";

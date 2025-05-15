@@ -1,4 +1,4 @@
-@model System.Exception
+@model NueroDrive.Controllers.ErrorViewModel
 
 @{
     ViewData["Title"] = "Error";
@@ -12,10 +12,10 @@
                     <h1 class="text-danger mb-4">Error</h1>
                     <h2 class="mb-3">An error occurred while processing your request.</h2>
                     
-                    @if (Model != null)
+                    @if (Model.ShowRequestId)
                     {
                         <p class="text-muted">
-                            <strong>Error:</strong> @Model.Message
+                            <strong>Request ID:</strong> <code>@Model.RequestId</code>
                         </p>
                     }
                     
