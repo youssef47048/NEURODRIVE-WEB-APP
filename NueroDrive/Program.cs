@@ -23,8 +23,8 @@ namespace NueroDrive
 
             // Add database context
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(
-                    builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(
+                    "Server=db19620.public.databaseasp.net; Database=db19620; User Id=db19620; Password=g@9N4Z!y-eQ6; Encrypt=False; MultipleActiveResultSets=True;"));
 
             // Add authentication
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
