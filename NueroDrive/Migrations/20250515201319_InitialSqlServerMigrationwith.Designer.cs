@@ -12,8 +12,8 @@ using NueroDrive.Data;
 namespace NueroDrive.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250515160630_InitialCreateWithIdentity")]
-    partial class InitialCreateWithIdentity
+    [Migration("20250515201319_InitialSqlServerMigrationwith")]
+    partial class InitialSqlServerMigrationwith
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

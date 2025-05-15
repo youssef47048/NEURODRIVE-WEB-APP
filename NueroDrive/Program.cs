@@ -40,7 +40,7 @@ namespace NueroDrive
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // Add ASP.NET Core Identity
+            // Add ASP.NET Core Identity with authentication configuration
             builder.Services.AddIdentity<User, IdentityRole>(options => {
                     options.SignIn.RequireConfirmedAccount = false;
                     options.Password.RequireDigit = true;
@@ -52,27 +52,28 @@ namespace NueroDrive
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Add authentication
-            builder.Services.AddAuthentication(options => 
-                {
-                    options.DefaultScheme = IdentityConstants.ApplicationScheme;
-                    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-                })
-                .AddCookie(IdentityConstants.ApplicationScheme, options =>
-                {
-                    options.LoginPath = "/Account/Login";
-                    options.LogoutPath = "/Account/Logout";
-                    options.AccessDeniedPath = "/Account/AccessDenied";
-                    options.Cookie.HttpOnly = true;
-                    options.ExpireTimeSpan = TimeSpan.FromDays(7);
-                    options.SlidingExpiration = true;
-                });
+            // Configure Identity Cookie options
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.LogoutPath = "/Account/Logout";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                options.SlidingExpiration = true;
+            });
 
             // Register application services
             builder.Services.AddScoped<FaceRecognitionService>();
             builder.Services.AddScoped<EmailService>();
 
             var app = builder.Build();
+
+            // DEBUG: Log configuration values at startup
+            var logger = app.Services.GetRequiredService<ILogger<Program>>();
+            logger.LogInformation("Application Environment: {Environment}", app.Environment.EnvironmentName);
+            logger.LogInformation("FaceRecognitionAPI:Url = {ApiUrl}", app.Configuration["FaceRecognitionAPI:Url"] ?? "Not configured");
+            logger.LogInformation("ContentRootPath: {ContentRootPath}", app.Environment.ContentRootPath);
 
             // Configure the HTTP request pipeline
             if (!app.Environment.IsDevelopment())

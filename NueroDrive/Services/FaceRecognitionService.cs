@@ -23,6 +23,10 @@ namespace NueroDrive.Services
             {
                 _logger.LogWarning("Face Recognition API is disabled. All verification attempts will return false.");
             }
+            else
+            {
+                _logger.LogInformation("Face Recognition API is enabled with URL: {ApiUrl}", _apiUrl);
+            }
         }
 
         public async Task<bool> CompareImagesAsync(string image1Base64, string image2Base64)
@@ -35,17 +39,19 @@ namespace NueroDrive.Services
             
             try
             {
-                _logger.LogInformation("Calling face verification API");
+                _logger.LogInformation("Calling face verification API at {ApiUrl}", _apiUrl);
                 
                 // Add required prefix if not already present
                 if (!image1Base64.StartsWith("data:image"))
                 {
                     image1Base64 = "data:image/jpeg;base64," + image1Base64;
+                    _logger.LogInformation("Added prefix to image1");
                 }
                 
                 if (!image2Base64.StartsWith("data:image"))
                 {
                     image2Base64 = "data:image/jpeg;base64," + image2Base64;
+                    _logger.LogInformation("Added prefix to image2");
                 }
                 
                 var requestData = new
@@ -62,8 +68,12 @@ namespace NueroDrive.Services
                 
                 var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
                 
-                _logger.LogInformation("Sending request to {ApiUrl}", _apiUrl);
+                // Set timeout to 30 seconds for the request
+                _httpClient.Timeout = TimeSpan.FromSeconds(30);
+                
+                _logger.LogInformation("Sending HTTP POST request to {ApiUrl}", _apiUrl);
                 var response = await _httpClient.PostAsync(_apiUrl, content);
+                _logger.LogInformation("Received response with status code: {StatusCode}", response.StatusCode);
 
                 // Log the full response for debugging
                 var responseBody = await response.Content.ReadAsStringAsync();
@@ -71,9 +81,18 @@ namespace NueroDrive.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var result = JsonSerializer.Deserialize<VerificationResponse>(responseBody);
-                    _logger.LogInformation("Verification result: {Result}", result?.verified);
-                    return result?.verified ?? false;
+                    try 
+                    {
+                        var result = JsonSerializer.Deserialize<VerificationResponse>(responseBody);
+                        _logger.LogInformation("Verification result: {Result}, Distance: {Distance}, Threshold: {Threshold}", 
+                            result?.verified, result?.distance, result?.threshold);
+                        return result?.verified ?? false;
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        _logger.LogError(jsonEx, "Failed to deserialize API response: {Response}", responseBody);
+                        return false;
+                    }
                 }
                 else
                 {
@@ -84,7 +103,7 @@ namespace NueroDrive.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error while calling face recognition API");
+                _logger.LogError(ex, "Error while calling face recognition API at {ApiUrl}", _apiUrl);
                 return false;
             }
         }
