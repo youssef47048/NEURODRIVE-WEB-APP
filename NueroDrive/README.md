@@ -86,30 +86,33 @@ The application will be available at `https://localhost:5001` and `http://localh
 
 ### Face Recognition Authentication
 
-**Endpoint**: `POST /api/FaceRecognition/authenticate`
+**Endpoint**: `POST https://neurodrive.runasp.net/api/verify-driver`
 
 **Request Body**:
 ```json
 {
   "carId": "ABC123",
-  "imageBase64": "base64-encoded-image-data"
+  "imageBase64": "data:image/jpeg;base64, the_image_base64_string_value"
 }
 ```
 
 **Success Response** (200 OK):
 ```json
+
 {
-  "message": "Authentication successful",
-  "driverName": "John Doe",
-  "vehicleName": "Tesla Model 3"
+"success": true,
+"isAuthorized": true,
+"driverName": "drivername",
 }
+
 ```
 
 **Unauthorized Response** (401 Unauthorized):
 ```json
 {
-  "message": "Face not recognized",
-  "vehicleName": "Tesla Model 3"
+    "success": true,
+    "isAuthorized": false,
+    "message": "No authorized driver match found"
 }
 ```
 
