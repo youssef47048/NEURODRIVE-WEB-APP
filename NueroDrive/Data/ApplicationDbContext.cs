@@ -1,18 +1,20 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NueroDrive.Models;
 
 namespace NueroDrive.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<AuthorizedDriver> AuthorizedDrivers { get; set; }
+        public DbSet<Payment> Payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,15 +33,15 @@ namespace NueroDrive.Data
                 .HasForeignKey(d => d.VehicleId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Make Email unique
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Email)
-                .IsUnique();
-
             // Ensure CarId is unique
             modelBuilder.Entity<Vehicle>()
                 .HasIndex(v => v.CarId)
                 .IsUnique();
+                
+            // Configure decimal precision for Payment
+            modelBuilder.Entity<Payment>()
+                .Property(p => p.Amount)
+                .HasPrecision(18, 2);
         }
     }
 } 

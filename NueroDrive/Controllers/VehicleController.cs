@@ -31,7 +31,7 @@ namespace NueroDrive.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var vehicles = await _context.Vehicles
                 .Where(v => v.UserId == userId)
                 .ToListAsync();
@@ -66,7 +66,7 @@ namespace NueroDrive.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                     _logger.LogInformation("User ID: {UserId}", userId);
                     
                     // Check if CarId is already used
@@ -101,7 +101,7 @@ namespace NueroDrive.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var vehicle = await _context.Vehicles
                 .Include(v => v.AuthorizedDrivers)
                 .FirstOrDefaultAsync(v => v.Id == id && v.UserId == userId);
@@ -117,7 +117,7 @@ namespace NueroDrive.Controllers
         [HttpGet]
         public async Task<IActionResult> AddDriver(int vehicleId)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var vehicle = await _context.Vehicles
                 .FirstOrDefaultAsync(v => v.Id == vehicleId && v.UserId == userId);
                 
@@ -139,7 +139,7 @@ namespace NueroDrive.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var vehicle = await _context.Vehicles
                     .FirstOrDefaultAsync(v => v.Id == model.VehicleId && v.UserId == userId);
                     
@@ -167,7 +167,7 @@ namespace NueroDrive.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveDriver(int driverId, int vehicleId)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var vehicle = await _context.Vehicles
                 .FirstOrDefaultAsync(v => v.Id == vehicleId && v.UserId == userId);
                 
@@ -194,7 +194,7 @@ namespace NueroDrive.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var vehicle = await _context.Vehicles
                 .FirstOrDefaultAsync(v => v.Id == id && v.UserId == userId);
                 
@@ -211,7 +211,7 @@ namespace NueroDrive.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var vehicle = await _context.Vehicles
                 .Include(v => v.AuthorizedDrivers)
                 .FirstOrDefaultAsync(v => v.Id == id && v.UserId == userId);

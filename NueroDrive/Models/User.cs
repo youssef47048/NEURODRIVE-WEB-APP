@@ -1,23 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace NueroDrive.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        public int Id { get; set; }
-
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Required]
-        public string Password { get; set; }
-
         [Required]
         public string Name { get; set; }
-
-        public string? PhoneNumber { get; set; }
 
         // For vehicle management
         public List<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
@@ -36,7 +26,7 @@ namespace NueroDrive.Models
         public string? Description { get; set; }
         
         // UserId is set by the controller, not from form input
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         
         [ForeignKey("UserId")]
         public User User { get; set; }
@@ -80,7 +70,7 @@ namespace NueroDrive.Models
         [Required]
         public SubscriptionType SubscriptionType { get; set; }
         
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         
         [ForeignKey("UserId")]
         public User User { get; set; }
