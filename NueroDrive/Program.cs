@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using NueroDrive.Data;
-using NueroDrive.Models;
 using NueroDrive.Services;
+using System.IO;
 
 namespace NueroDrive
 {
@@ -16,6 +16,16 @@ namespace NueroDrive
             // Add services to the container
             builder.Services.AddControllersWithViews();
             builder.Services.AddHttpClient();
+            
+            // Configure data protection to persist keys
+            var keyPath = builder.Configuration["DataProtection:KeyPath"] ?? "DataProtectionKeys";
+            var keysDirectory = Path.Combine(builder.Environment.ContentRootPath, keyPath);
+            Directory.CreateDirectory(keysDirectory); // Ensure directory exists
+            
+            builder.Services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(keysDirectory))
+                .SetApplicationName("NueroDrive");
+                
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -25,37 +35,20 @@ namespace NueroDrive
 
             // Add database context
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // Add Identity
-            builder.Services.AddIdentity<User, IdentityRole>(options =>
-            {
-                // Password settings
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 8;
-
-                // Lockout settings
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-
-                // User settings
-                options.User.RequireUniqueEmail = true;
-            })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
-
-            // Configure Identity cookie settings
-            builder.Services.ConfigureApplicationCookie(options =>
-            {
-                options.LoginPath = "/Account/Login";
-                options.LogoutPath = "/Account/Logout";
-                options.AccessDeniedPath = "/Account/AccessDenied";
-                options.ExpireTimeSpan = TimeSpan.FromDays(7);
-                options.SlidingExpiration = true;
-            });
+            // Add authentication
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/Account/Logout";
+                    options.AccessDeniedPath = "/Account/AccessDenied";
+                    options.Cookie.HttpOnly = true;
+                    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                    options.SlidingExpiration = true;
+                });
 
             // Register application services
             builder.Services.AddScoped<FaceRecognitionService>();

@@ -9,17 +9,30 @@ namespace NueroDrive.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<FaceRecognitionService> _logger;
-        private readonly string _apiUrl;
+        private readonly string? _apiUrl;
+        private readonly bool _isEnabled;
 
         public FaceRecognitionService(HttpClient httpClient, IConfiguration configuration, ILogger<FaceRecognitionService> logger)
         {
             _httpClient = httpClient;
             _logger = logger;
-            _apiUrl = configuration["FaceRecognitionAPI:Url"] ?? throw new ArgumentNullException("Face Recognition API URL not configured");
+            _apiUrl = configuration["FaceRecognitionAPI:Url"];
+            _isEnabled = !string.IsNullOrEmpty(_apiUrl);
+            
+            if (!_isEnabled)
+            {
+                _logger.LogWarning("Face Recognition API is disabled. All verification attempts will return false.");
+            }
         }
 
         public async Task<bool> CompareImagesAsync(string image1Base64, string image2Base64)
         {
+            if (!_isEnabled)
+            {
+                _logger.LogInformation("Face Recognition API is disabled. Returning false for verification attempt.");
+                return false;
+            }
+            
             try
             {
                 _logger.LogInformation("Calling face verification API");
