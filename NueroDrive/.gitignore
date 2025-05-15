@@ -20,9 +20,9 @@ obj/
 *.dotCover
 
 # Sensitive configuration files
-appsettings.Development.json
-appsettings.Production.json
-appsettings.json
+*appsettings.Development.json
+*appsettings.Production.json
+*appsettings.json
 !appsettings.template.json
 
 # Data protection keys
