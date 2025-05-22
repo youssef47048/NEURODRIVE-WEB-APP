@@ -13,6 +13,12 @@ NueroDrive is a facial recognition-based driver authentication system that enhan
 
 The application is deployed and accessible at: [https://neurodrive.runasp.net/](https://neurodrive.runasp.net/)
 
+## 🎥 Demo Video
+
+[https://user-images.githubusercontent.com/YOUR_USER_ID/YOUR_REPOSITORY/assets/demo.mp4](https://github.com/user-attachments/assets/27e39ae8-1b92-4534-ad21-c311a613caef)
+
+#### Connecting the GUI application with the Web Application Endpoint that retrieves the Authorized Drivers for the specific car ID and compares them with the image sent from the GUI through an external Face Authentication service.
+
 ## Key Features
 
 - **Secure Authentication**: Face recognition technology to verify driver identity
