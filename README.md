@@ -18,6 +18,12 @@ The application is deployed and accessible at: [https://neurodrive.runasp.net/](
 
 #### Connecting the GUI application with the Web Application Endpoint that retrieves the Authorized Drivers for the specific car ID and compares them with the image sent from the GUI through an external Face Authentication service.
 
+
+## Email Preview
+
+Here is a preview of the email that will be sent if unauthorized driver tries to access the vehicle
+![Email Preview](email.png)
+
 ## Key Features
 
 - **Secure Authentication**: Face recognition technology to verify driver identity
